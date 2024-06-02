@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
+
+
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
@@ -16,7 +18,7 @@ const normalScores = [];
 app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
 
-    if (users[username] && users[username] === password) {
+    if (users[username] === password) {
         res.json({ token: 'dummy-token', username });
     } else {
         res.status(401).json({ message: 'Invalid credentials' });
