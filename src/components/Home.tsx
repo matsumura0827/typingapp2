@@ -20,7 +20,7 @@ const Home: React.FC = () => {
 
     return (
         <div className={styles.container}>
-            <h1>SALTOBI -コードマスター改-</h1>
+            <h1 className={styles.codemaster}>SALTOBI -コードマスター改-</h1>
             <img src="/assets/code-ninja.jpg" className={styles.image} alt="Ninja" />
             <div className={styles.buttonContainer}>
                 <button className={styles.button} onClick={handleEasyMode}>イージーモード</button>

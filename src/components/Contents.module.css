@@ -12,13 +12,24 @@
     margin-top: 70px;
 }
 
+.codemaster {
+    font-size: 2.5em;
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+.image {
+    margin-bottom: 30px;
+}
+
 .countdown {
     font-size: 3rem;
 }
-.finalScore{
+
+.finalScore {
     margin-top: 220px;
     font-size: 3em;
 }
+
 .word {
     font-size: 3rem;
     font-family: 'Zen Maru Gothic', sans-serif;
