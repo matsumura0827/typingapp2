@@ -14,7 +14,7 @@ const EasyMode: React.FC = () => {
     const [gameOver, setGameOver] = useState<boolean>(false);
     const [gameStarted, setGameStarted] = useState<boolean>(false);
     const [countdown, setCountdown] = useState<number>(3);
-    const [escaped, setEscaped] = useState<boolean>(false);
+  //  const [escaped, setEscaped] = useState<boolean>(false);
     const navigate = useNavigate();
     const timerRef = useRef<number | null>(null);
 
@@ -115,7 +115,7 @@ const EasyMode: React.FC = () => {
         if (gameStarted && !gameOver) {
             const confirmMessage = "ゲームを終了してスコアを表示しますか？";
             if (window.confirm(confirmMessage)) {
-                setEscaped(true);
+              //  setEscaped(true);
                 setGameOver(true);
                 saveScore();
             }
