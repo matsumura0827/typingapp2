@@ -1,3 +1,4 @@
+// src/components/EasyMode.tsx
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { getRandomWord } from '../utils/randomWord';
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +14,7 @@ const NormalMode: React.FC = () => {
     const [gameOver, setGameOver] = useState<boolean>(false);
     const [gameStarted, setGameStarted] = useState<boolean>(false);
     const [countdown, setCountdown] = useState<number>(3);
+    const [escaped, setEscaped] = useState<boolean>(false);
     const navigate = useNavigate();
     const timerRef = useRef<number | null>(null);
 
@@ -23,7 +25,7 @@ const NormalMode: React.FC = () => {
             }, 1000);
         } else if (timeLeft === 0) {
             setGameOver(true);
-            saveScore().then(() => navigate('/normalranking'));
+            saveScore();
         }
         return () => {
             if (timerRef.current !== null) {
@@ -56,6 +58,7 @@ const NormalMode: React.FC = () => {
                 // ミスタイプの場合、残り時間を1秒減らす
                 setTimeLeft((prevTimeLeft) => Math.max(prevTimeLeft - 1, 0));
             }
+
 
             if (currentIndex + 1 === word.length) {
                 const fetchWord = async () => {
@@ -113,12 +116,15 @@ const NormalMode: React.FC = () => {
     }, [gameStarted]);
 
     const handleBack = async () => {
-        if (gameStarted || gameOver) {
-            const confirmMessage = "本当に逃げるんですか？？";
+        if (gameStarted && !gameOver) {
+            const confirmMessage = "ゲームを終了してスコアを表示しますか？";
             if (window.confirm(confirmMessage)) {
-                await saveScore();
-                navigate('/normalranking');
+                setEscaped(true);
+                setGameOver(true);
+                saveScore();
             }
+        } else if (gameOver) {
+            navigate('/');
         } else {
             navigate('/');
         }
@@ -138,34 +144,35 @@ const NormalMode: React.FC = () => {
         }
     };
 
-    const handleRankingBoard = () => {
-        navigate('/normalranking');
-    };
+    const renderScore = () => (
+        <div className={styles.gameOver}>
+            <h2 className={styles.finalScore}>スコア: {score}</h2>
+            <button className={`${styles.button} ${styles.backButton}`} onClick={() => navigate('/')}>戻る</button>
+        </div>
+    );
 
     return (
         <div tabIndex={0} className={styles.container}>
-            <h1 className={styles.title}>ノーマルモード</h1>
-            <p>ミスタイプごとにタイムが減少</p>
-            <h2 className={styles.score}>スコア: {score}</h2>
-            <h2 className={styles.timeLeft}>残り時間: {timeLeft}s</h2>
-            {!gameStarted && <h2 className={styles.countdown}>{countdown}</h2>}
             {gameOver ? (
-                <div className={styles.gameOver}>
-                    <button className={`${styles.button} ${styles.backButton}`} onClick={handleBack}>Back</button>
-                </div>
+                renderScore()
             ) : (
-                <div>
-                    <div className={styles.word}>
-                        {word.split('').map((char, index) => (
-                            <span key={index} style={{ color: typedCorrectly[index] === true ? 'green' : 'white' }}>
-                                {char}
-                            </span>
-                        ))}
+                <>
+                    <h1 className={styles.title}>イージーモード</h1>
+                    <h2 className={styles.score}>スコア: {score}</h2>
+                    <h2 className={styles.timeLeft}>残り時間: {timeLeft}s</h2>
+                    {!gameStarted && <h2 className={styles.countdown}>{countdown}</h2>}
+                    <div>
+                        <div className={styles.word}>
+                            {word.split('').map((char, index) => (
+                                <span key={index} style={{ color: typedCorrectly[index] === true ? 'green' : 'white' }}>
+                                    {char}
+                                </span>
+                            ))}
+                        </div>
+                        {!gameStarted && <button className={styles.button} onClick={handleStart}>スタート</button>}
+                        <button className={`${styles.button} ${styles.backButton}`} onClick={handleBack}>逃げる</button>
                     </div>
-                    {!gameStarted && <button className={styles.button} onClick={handleStart}>スタート</button>}
-                    <button className={`${styles.button} ${styles.backButton}`} onClick={handleBack}>逃げる</button>
-                    {!gameStarted && <button className={`${styles.button} ${styles.rankingButton}`} onClick={handleRankingBoard}>ランキング</button>}
-                </div>
+                </>
             )}
         </div>
     );

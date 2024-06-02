@@ -15,7 +15,10 @@
 .countdown {
     font-size: 3rem;
 }
-
+.finalScore{
+    margin-top: 220px;
+    font-size: 3em;
+}
 .word {
     font-size: 3rem;
     font-family: 'Zen Maru Gothic', sans-serif;
