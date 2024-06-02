@@ -157,7 +157,8 @@ const NormalMode: React.FC = () => {
                 renderScore()
             ) : (
                 <>
-                    <h1 className={styles.title}>イージーモード</h1>
+                    <h1 className={styles.title}>ノーマルモード</h1>
+                    <p>ミスタイプの場合、残り時間を1秒減らす</p>
                     <h2 className={styles.score}>スコア: {score}</h2>
                     <h2 className={styles.timeLeft}>残り時間: {timeLeft}s</h2>
                     {!gameStarted && <h2 className={styles.countdown}>{countdown}</h2>}
